@@ -3,7 +3,7 @@ import express from "express";
 
 // Create an instance of an Express application
 const app = express();
-const name = process.env.NAME;
+const name = process.env.NAME; //process = global object. It takes the name from the .env file
 
 // Define a route handler for the root URL ('/')
 app.get("/", (req, res) => {
