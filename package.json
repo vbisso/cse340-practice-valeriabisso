@@ -1,6 +1,7 @@
 {
   "name": "cse340-practice-valeriabisso",
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^4.21.2"
   },
   "type": "module",
@@ -16,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "ws": "^8.18.0"
   }
 }
