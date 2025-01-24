@@ -33,26 +33,25 @@ app.get("/about", (req, res) => {
   const content = "<h1>About Page :))) </h1>";
   const mode = process.env.MODE;
   const port = process.env.PORT;
-  res.render("about", { title, content, mode, port });
+  res.render("index", { title, content, mode, port });
 });
 app.get("/contact", (req, res) => {
   const title = "Contact Page";
   const content = "<h1>Contact Page</h1>";
   const mode = process.env.MODE;
   const port = process.env.PORT;
-  res.render("contact", { title, content, mode, port });
+  res.render("index", { title, content, mode, port });
 });
 //explore page example
-// app.get("/explore/:name/:age/:id", (req, res) => {
-//   const name = req.params.name;
-//   const age = req.params.age;
-//   const id = req.params.id;
-//   const title = "Explore Page";
-//   const content = `<h1>Welcome to the Explore Page, ${name}</h1>`;
-//   //res.send(content);
-//   res.render("index", { title, content, mode, port });
-//   //res.send("Check");
-// });
+app.get("/explore/:name/:age/:id", (req, res) => {
+  const name = req.params.name;
+  const age = req.params.age;
+  const id = req.params.id;
+  const title = "Explore Page";
+  const content = `<h1>Welcome to the Explore Page, ${name}</h1>`;
+  res.send(content);
+  res.render("index", { title, content, mode, port });
+});
 
 // When in development mode, start a WebSocket server for live reloading
 if (mode.includes("dev")) {
