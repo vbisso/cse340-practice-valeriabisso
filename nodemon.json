@@ -1,4 +1,4 @@
 {
-  "ext": "js css ejs",
-  "exec": "node --env-file=.env server.js"
+    "ext": "js css ejs",
+    "exec": "node --env-file=.env server.js"
 }
