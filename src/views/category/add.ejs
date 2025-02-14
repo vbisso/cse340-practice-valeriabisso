@@ -1,0 +1,30 @@
+<form action="/category/add" method="POST" enctype="multipart/form-data">
+  <div>
+    <label for="game_name">Game Name:</label>
+    <input type="text" id="game_name" name="game_name" required />
+  </div>
+
+  <div>
+    <label for="game_description">Game Description:</label>
+    <textarea id="game_description" name="game_description" required></textarea>
+  </div>
+
+  <div>
+    <label for="classification_id">Classification:</label>
+    <select id="classification_id" name="classification_id" required>
+      <option value="" disabled selected>Select Classification</option>
+      <% classifications.forEach((classification) => { %>
+      <option value="<%= classification.classification_id %>">
+        <%= classification.classification_name %>
+      </option>
+      <% }); %>
+    </select>
+  </div>
+
+  <div>
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="image" />
+  </div>
+
+  <button type="submit">Add Game</button>
+</form>

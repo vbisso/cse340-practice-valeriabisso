@@ -1,0 +1,11 @@
+<h1><%= title %></h1>
+<div class="game-grid">
+  <% games.forEach((game) => { %>
+  <div class="game-card">
+    <h3><%= game.game_name %></h3>
+
+    <p><%= game.game_description %></p>
+    <img src="<%= game.image_path %>" alt="<%= game.game_name %>" />
+  </div>
+  <% }); %>
+</div>
