@@ -2,6 +2,11 @@
 <div class="game-grid">
   <% games.forEach((game) => { %>
   <div class="game-card">
+    <form action="/category/delete/<%= game.game_id %>" method="POST">
+      <button type="submit">Delete</button>
+    </form>
+    <a href="/category/edit/<%= game.game_id %>">Edit</a>
+
     <h3><%= game.game_name %></h3>
 
     <p><%= game.game_description %></p>
