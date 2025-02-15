@@ -101,6 +101,77 @@ async function deleteGame(game_id) {
   return game.classification_id; // Returns the classification ID to redirect back
 }
 
+const addClassification = async (classification_name) => {
+  //does nothing if the classification name is empty.
+  if (!classification_name || classification_name.trim() === "") {
+    throw new Error("Classification name cannot be empty.");
+  }
+
+  const db = await dbPromise;
+
+  //Checks if the classification already exists before inserting.
+  const classificationExists = await db.get(
+    "SELECT classification_id FROM classification WHERE LOWER(classification_name) = LOWER(?)",
+    classification_name
+  );
+
+  if (classificationExists) {
+    throw new Error("Classification already exists.");
+  }
+
+  //Inserts the new classification into the database
+  const runSQL = await db.run(
+    "INSERT INTO classification (classification_name) VALUES (?)",
+    classification_name
+  );
+
+  return { classification_id: runSQL.lastID, classification_name };
+};
+
+const moveClassification = async (
+  old_classification_id,
+  new_classification_id
+) => {
+  const db = await dbPromise;
+
+  // Moves all games in the old classification to the new classification
+  await db.run(
+    "UPDATE game SET classification_id = ? WHERE classification_id = ?",
+    [new_classification_id, old_classification_id]
+  );
+};
+
+const deleteClassification = async (
+  classification_id,
+  new_classification_id
+) => {
+  console.log("hola");
+  const db = await dbPromise;
+
+  // checks if there are games in the classification
+  const games = await db.all(
+    "SELECT game_id FROM game WHERE classification_id = ?",
+    [classification_id]
+  );
+
+  // If there are games in the classification, move them to the new classification
+  if (games.length > 0) {
+    if (new_classification_id) {
+      await moveClassification(classification_id, new_classification_id); // Move games to new category
+    }
+
+    // Delete the classification from the database
+    await db.run("DELETE FROM classification WHERE classification_id = ?", [
+      classification_id,
+    ]);
+  }
+
+  // Delete the classification from the database
+  await db.run("DELETE FROM classification WHERE classification_id = ?", [
+    classification_id,
+  ]);
+};
+
 export {
   getClassifications,
   getGamesByClassification,
@@ -108,4 +179,7 @@ export {
   getGameById,
   updateGame,
   deleteGame,
+  addClassification,
+  deleteClassification,
+  moveClassification,
 };

@@ -6,6 +6,8 @@ import {
   getGameById,
   updateGame,
   deleteGame,
+  addClassification,
+  deleteClassification,
 } from "../../models/index.js";
 import path from "path";
 import fs from "fs";
@@ -128,16 +130,46 @@ router.post("/edit/:id", async (req, res) => {
 // Delete game
 router.post("/delete/:id", async (req, res, next) => {
   const classification_id = await deleteGame(req.params.id); //deletes the game and returns the classification_id
+  res.redirect(`/category/view/${classification_id}`);
+});
 
-  if (!classification_id) {
-    const error = new Error("Game not found");
-    error.title = "Game Not Found";
-    error.status = 404;
-    next(error); // to global error handler
-    return;
+// Add classification get
+router.get("/add/classification", async (req, res) => {
+  res.render("category/add-classification", { title: "Add Classification" });
+});
+
+// Add route to accept new classification post
+router.post("/add/classification", async (req, res) => {
+  const classification_id = req.body.classification_id;
+  const classification_name = req.body.classification_name;
+  const games = await getGamesByClassification(classification_id);
+
+  if (!classification_name.trim()) {
+    res.redirect("/category/add/classification");
   }
 
+  await addClassification(classification_name);
+
   res.redirect(`/category/view/${classification_id}`);
+});
+
+// Delete classification GET
+router.get("/delete/classification", async (req, res) => {
+  const classifications = await getClassifications();
+  res.render("category/delete-classification", {
+    title: "Delete Classification",
+    classifications,
+  });
+});
+
+// Delete classification POST
+router.post("/delete/classification", async (req, res) => {
+  console.log("Delete request received:", req.body);
+
+  // const { classification_id, new_classification_id } = req.body;
+
+  // await deleteClassification(classification_id, new_classification_id);
+  // res.redirect("/category/delete/classification");
 });
 
 export default router;

@@ -23,7 +23,6 @@ nav {
   background-color: #142550;
   align-items: center;
   justify-content: space-between;
-  position: relative;
 }
 
 nav a {
@@ -39,6 +38,7 @@ nav ul {
   justify-content: flex-start;
 
   margin-left: 10px;
+  margin-right: 10px;
 }
 nav ul li::after {
   content: "  |";
@@ -51,21 +51,21 @@ nav ul li:last-of-type::after {
 nav ul li {
   cursor: pointer;
   padding: 5px;
-
   border-radius: 5px;
 }
+
 #logo {
   width: 100px;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  padding-left: 10px;
 }
 #theme-toggle {
-  font-size: 20px;
+  font-size: 30px;
   border: none;
   cursor: pointer;
   margin-right: 20px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 footer {
@@ -111,4 +111,55 @@ footer {
 .game-card img,
 .game-image {
   height: 200px;
+}
+
+/* delete classification */
+.category-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+
+  & .category-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.header {
+      background-color: #f4f4f4;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    & .category-cell {
+      flex: 1;
+      padding: 8px;
+      text-align: left;
+
+      & select {
+        width: 100%;
+        padding: 5px;
+      }
+
+      & button {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        cursor: pointer;
+        border-radius: 3px;
+
+        &:hover {
+          background-color: #c9302c;
+        }
+      }
+    }
+  }
 }
