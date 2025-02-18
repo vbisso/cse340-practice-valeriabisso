@@ -8,6 +8,7 @@ import {
   deleteGame,
   addClassification,
   deleteClassification,
+  moveClassification,
 } from "../../models/index.js";
 import path from "path";
 import fs from "fs";
@@ -21,7 +22,8 @@ router.get("/view/:id", async (req, res, next) => {
 
   // If no games are found, throw a 404 error
   if (games.length <= 0) {
-    const title = "Category Not Found";
+    console.log("hola");
+    const title = "Games Not Found";
     const error = new Error(title);
     //console.log(error);
     error.title = title;
@@ -140,21 +142,17 @@ router.get("/add/classification", async (req, res) => {
 
 // Add route to accept new classification post
 router.post("/add/classification", async (req, res) => {
-  const classification_id = req.body.classification_id;
-  const classification_name = req.body.classification_name;
-  const games = await getGamesByClassification(classification_id);
-
-  if (!classification_name.trim()) {
+  const classification_name = req.body.classification_name.trim();
+  if (!classification_name) {
     res.redirect("/category/add/classification");
   }
-
-  await addClassification(classification_name);
-
-  res.redirect(`/category/view/${classification_id}`);
+  const classification = await addClassification(classification_name);
+  //console.log(classification);
+  res.redirect(`/category/view/${classification.classification_id}`);
 });
 
 // Delete classification GET
-router.get("/delete/classification", async (req, res) => {
+router.get("/delete-classification", async (req, res) => {
   const classifications = await getClassifications();
   res.render("category/delete-classification", {
     title: "Delete Classification",
@@ -163,13 +161,27 @@ router.get("/delete/classification", async (req, res) => {
 });
 
 // Delete classification POST
-router.post("/delete/classification", async (req, res) => {
-  console.log("Delete request received:", req.body);
+// Note: Previous path was /category/delete/classification but this was changed to /delete-classification
+// I was getting an error bc of my already defined path category/delete/:id
+router.post("/delete-classification", async (req, res) => {
+  const classification_id = req.body.classification_id;
+  const new_classification_id = req.body.new_category_id;
+  console.log(req.body);
 
-  // const { classification_id, new_classification_id } = req.body;
+  if (new_classification_id == "delete") {
+    //console.log("hola");
+    await deleteClassification(classification_id);
+  } else {
+    const check_existing_games = await getGamesByClassification(
+      classification_id
+    );
+    if (check_existing_games.length > 0) {
+      await moveClassification(classification_id, new_classification_id); //moves the games to the new category
+      await deleteClassification(classification_id); //deletes the old category
+    }
+  }
 
-  // await deleteClassification(classification_id, new_classification_id);
-  // res.redirect("/category/delete/classification");
+  res.redirect("/category/delete-classification");
 });
 
 export default router;

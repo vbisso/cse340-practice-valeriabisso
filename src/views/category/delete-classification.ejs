@@ -8,12 +8,13 @@
   </div>
 
   <% classifications.forEach((category) => { %>
-  <form action="/category/delete/classification" method="POST">
-    <!-- <input
+  <form action="/category/delete-classification" method="POST">
+    <input
       type="hidden"
       name="classification_id"
-      value="<%= classifications.classification_id %>"
-    /> -->
+      value="<%= category.classification_id %>"
+    />
+
     <div class="category-row">
       <div class="category-cell"><%= category.classification_name %></div>
       <div class="category-cell">
@@ -21,9 +22,11 @@
           <option value="">-- Choose an Option --</option>
           <option value="delete">Do Not Move, Delete Games</option>
           <% classifications.forEach((otherCategory) => { %>
+
           <option value="<%= otherCategory.classification_id %>">
             <%= otherCategory.classification_name %>
           </option>
+
           <% }); %>
         </select>
       </div>

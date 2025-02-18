@@ -141,33 +141,16 @@ const moveClassification = async (
   );
 };
 
-const deleteClassification = async (
-  classification_id,
-  new_classification_id
-) => {
-  console.log("hola");
+const deleteClassification = async (classification_id) => {
   const db = await dbPromise;
 
-  // checks if there are games in the classification
-  const games = await db.all(
-    "SELECT game_id FROM game WHERE classification_id = ?",
-    [classification_id]
-  );
-
-  // If there are games in the classification, move them to the new classification
-  if (games.length > 0) {
-    if (new_classification_id) {
-      await moveClassification(classification_id, new_classification_id); // Move games to new category
-    }
-
-    // Delete the classification from the database
-    await db.run("DELETE FROM classification WHERE classification_id = ?", [
-      classification_id,
-    ]);
-  }
-
-  // Delete the classification from the database
+  // Delete the classification from the database == "Do not move, Delete Games"
   await db.run("DELETE FROM classification WHERE classification_id = ?", [
+    classification_id,
+  ]);
+
+  // Delete all games associated with the classification
+  await db.run("DELETE FROM game WHERE classification_id = ?", [
     classification_id,
   ]);
 };
