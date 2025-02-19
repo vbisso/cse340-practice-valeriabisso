@@ -1,3 +1,13 @@
+
+/**
+ * Middleware to log details of incoming requests and responses.
+ * 
+ * NOTE: This file is not used in the project but was included to help with debugging if needed.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function in the stack.
+ */
 const requestLogger = (req, res, next) => {
     const start = Date.now();
     const originalEnd = res.end;
