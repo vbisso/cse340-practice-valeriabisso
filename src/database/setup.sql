@@ -25,3 +25,10 @@ INSERT OR IGNORE INTO games (game_id, game_name, game_description, category_id, 
 (2, 'Risk', 'A world domination game of strategy and conquest.', 1, '/images/games/risk.jpg'),
 (3, 'Uno', 'A fast-paced card game of matching colors and numbers.', 2, '/images/games/uno.jpg'),
 (4, 'Apples to Apples', 'A fun word association game perfect for family and friends.', 2, '/images/games/apples-to-apples.jpg');
+
+-- Create the users table if it doesn't exist
+CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
