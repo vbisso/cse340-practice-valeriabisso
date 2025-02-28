@@ -76,6 +76,12 @@ app.use(
   })
 );
 
+//middleware for res.locals.session_user
+app.use((req, res, next) => {
+  res.locals.session_user = req.session.user || null;
+  next();
+});
+
 //flash middleware
 app.use(flashMessages);
 

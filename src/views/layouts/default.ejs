@@ -6,9 +6,13 @@
   <body>
     <header><%- include('../partials/header') %></header>
     <main>
-      <% if (flash) { %> <% flash.forEach((obj) => { %> <%-
-      include('../partials/flash', { type: obj.type, message: obj.message }) %>
-      <% }); %> <% } %> <%- body %>
+      <div id="message-area">
+        <% if (flash) { %> <% flash.forEach((obj) => { %> <%-
+        include('../partials/flash', { type: obj.type, message: obj.message })
+        %> <% }); %> <% } %>
+      </div>
+
+      <%- body %>
     </main>
     <footer><%- include('../partials/footer') %></footer>
   </body>
